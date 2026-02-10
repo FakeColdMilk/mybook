@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  bookings      Booking[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +75,56 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Hotel {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  city        String
+  country     String
+  address     String
+  imageUrl    String?
+  rooms       Room[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("hotel")
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  hotelId     String
+  hotel       Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  roomNumber  String
+  type        String    // e.g., "Single", "Double", "Suite"
+  price       Float     // price per night
+  capacity    Int
+  description String?
+  imageUrl    String?
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([hotelId, roomNumber])
+  @@index([hotelId])
+  @@map("room")
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  checkIn   DateTime
+  checkOut  DateTime
+  totalPrice Float
+  status    String   @default("confirmed") // confirmed, cancelled
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([roomId])
+  @@map("booking")
 }
