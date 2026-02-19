@@ -83,10 +83,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="bg-slate-800 border-4 border-amber-400">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-3xl font-black text-white">Login to your account</CardTitle>
+          <CardDescription className="text-base text-slate-300">
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
@@ -94,7 +94,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           <form onSubmit={onSubmit}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email" className="text-white font-semibold">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
@@ -107,10 +107,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password" className="text-white font-semibold">Password</FieldLabel>
                   <a
                     href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    className="ml-auto inline-block text-sm text-amber-400 hover:text-amber-300 underline-offset-4 hover:underline font-semibold"
                   >
                     Forgot your password?
                   </a>
@@ -126,7 +126,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
               <Field>
                 <div className="flex flex-col gap-2">
-                  <Button type="submit" disabled={loading}>
+                  <Button type="submit" disabled={loading} className="bg-amber-500 hover:bg-amber-600 text-white font-black text-base">
                     {loading ? "Signing in…" : "Login"}
                   </Button>
 
@@ -135,18 +135,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     type="button"
                     onClick={onGitHubSignIn}
                     disabled={isSubmittingSocial}
+                    className="border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-slate-900 font-black text-base"
                   >
                     {isSubmittingSocial ? "Redirecting…" : "Login with GitHub"}
                   </Button>
 
                   {errorMsg && (
-                    <div className="text-red-600 text-sm mt-2" role="alert">
+                    <div className="text-amber-400 text-sm mt-2 font-bold" role="alert">
                       {errorMsg}
                     </div>
                   )}
 
-                  <FieldDescription className="text-center">
-                    Don't have an account? <a href="/signup">Sign up</a>
+                  <FieldDescription className="text-center text-slate-300">
+                    Don't have an account? <a href="/signup" className="text-amber-400 font-bold hover:text-amber-300">Sign up</a>
                   </FieldDescription>
                 </div>
               </Field>

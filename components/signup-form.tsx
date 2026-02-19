@@ -67,10 +67,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   }
 
   return (
-    <Card {...props}>
+    <Card {...props} className="bg-slate-800 border-4 border-amber-400 shadow-2xl">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-4xl font-black text-white">Create an account</CardTitle>
+        <CardDescription className="text-lg text-slate-300 mt-2">
           Enter your information below to create your account
         </CardDescription>
       </CardHeader>
@@ -78,7 +78,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         <form onSubmit={onSubmit}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="name">Full Name</FieldLabel>
+              <FieldLabel htmlFor="name" className="text-white font-semibold">Full Name</FieldLabel>
               <Input
                 id="name"
                 type="text"
@@ -89,7 +89,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email" className="text-white font-semibold">Email</FieldLabel>
               <Input
                 id="email"
                 type="email"
@@ -98,13 +98,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <FieldDescription>
+              <FieldDescription className="text-slate-300">
                 We&apos;ll use this to contact you. We will not share your email
                 with anyone else.
               </FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel htmlFor="password" className="text-white font-semibold">Password</FieldLabel>
               <Input
                 id="password"
                 type="password"
@@ -112,12 +112,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FieldDescription>
+              <FieldDescription className="text-slate-300">
                 Must be at least 8 characters long.
               </FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="confirm-password">
+              <FieldLabel htmlFor="confirm-password" className="text-white font-semibold">
                 Confirm Password
               </FieldLabel>
               <Input
@@ -127,20 +127,20 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+              <FieldDescription className="text-slate-300">Please confirm your password.</FieldDescription>
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading} className="bg-amber-500 hover:bg-amber-600 text-white font-black text-base">
                   {loading ? "Creating Account…" : "Create Account"}
                 </Button>
                 {errorMsg && (
-                  <div className="text-red-600 text-sm mt-2" role="alert">
+                  <div className="text-amber-400 text-sm mt-2 font-bold" role="alert">
                     {errorMsg}
                   </div>
                 )}
-                <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="/login">Sign in</a>
+                <FieldDescription className="px-6 text-center text-slate-300">
+                  Already have an account? <a href="/login" className="text-amber-400 font-bold hover:text-amber-300">Sign in</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
