@@ -131,3 +131,37 @@ export async function GET(request: Request) {
     )
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() })
+
+    if (!session) {
+      return Response.json({ message: "Unauthorized" }, { status: 401 })
+    }
+
+    const body = await request.json()
+    const { id } = body
+
+    if (!id) {
+      return Response.json({ message: "Missing booking id" }, { status: 400 })
+    }
+
+    const booking = await prisma.booking.findUnique({ where: { id } })
+
+    if (!booking) {
+      return Response.json({ message: "Booking not found" }, { status: 404 })
+    }
+
+    if (booking.userId !== session.user.id) {
+      return Response.json({ message: "Unauthorized" }, { status: 403 })
+    }
+
+    await prisma.booking.delete({ where: { id } })
+
+    return Response.json({ success: true })
+  } catch (error) {
+    console.error("Error deleting booking:", error)
+    return Response.json({ message: "Failed to delete booking" }, { status: 500 })
+  }
+}

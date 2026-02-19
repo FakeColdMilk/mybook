@@ -21,6 +21,7 @@ interface BookingWithRoom extends Booking {
 export default function MyBookingsPage() {
   const [bookings, setBookings] = useState<BookingWithRoom[]>([])
   const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 console.log("Bookings state:", bookings) // Debugging log
   useEffect(() => {
@@ -113,8 +114,34 @@ console.log("Bookings state:", bookings) // Debugging log
                     <Button className="bg-white text-slate-900 font-black hover:bg-gray-100 px-8 py-3">View Details</Button>
                   </Link>
                   {booking.status === "confirmed" && (
-                    <Button className="bg-red-600 text-white font-bold hover:bg-red-700 px-8 py-3">Cancel</Button>
-                  )}
+                      <Button
+                        className="bg-red-600 text-white font-bold hover:bg-red-700 px-8 py-3"
+                        onClick={async () => {
+                          const should = confirm("Are you sure you want to cancel this booking?")
+                          if (!should) return
+                          try {
+                            setDeleting(booking.id)
+                            const res = await fetch("/api/bookings", {
+                              method: "DELETE",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ id: booking.id }),
+                            })
+                            if (!res.ok) {
+                              const err = await res.json().catch(() => ({ message: 'Failed to cancel' }))
+                              throw new Error(err?.message || 'Failed to cancel')
+                            }
+                            setBookings((prev) => prev.filter((b) => b.id !== booking.id))
+                          } catch (err: any) {
+                            setError(err?.message || "Failed to cancel booking")
+                          } finally {
+                            setDeleting(null)
+                          }
+                        }}
+                        disabled={deleting === booking.id}
+                      >
+                        {deleting === booking.id ? "Cancelling…" : "Cancel"}
+                      </Button>
+                    )}
                 </div>
               </Card>
             ))}
