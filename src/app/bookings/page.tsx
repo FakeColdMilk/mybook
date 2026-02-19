@@ -6,12 +6,23 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { format } from "date-fns"
 import Header from "@/components/header"
+import { Booking,Room } from "@/src/generated/prisma/client"
+
+interface BookingWithRoom extends Booking {
+  room: Room & {
+    hotel: {
+      name: string;
+      city: string;
+      country: string;
+    };
+  };
+}
 
 export default function MyBookingsPage() {
-  const [bookings, setBookings] = useState<any>([])
+  const [bookings, setBookings] = useState<BookingWithRoom[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
+console.log("Bookings state:", bookings) // Debugging log
   useEffect(() => {
     const fetchBookings = async () => {
       try {
